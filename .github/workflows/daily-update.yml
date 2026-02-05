@@ -1,0 +1,42 @@
+name: Daily Scoop Update
+
+on:
+  schedule:
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+
+jobs:
+  update-bucket:
+    runs-on: windows-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Install Scoop
+        run: |
+          Set-ExecutionPolicy RemoteSigned -Scope CurrentUser -Force
+          irm get.scoop.sh | iex
+
+      - name: Update Manifests
+        run: |
+          scoop bucket add local .
+          scoop checkver * -u
+          scoop bucket rm local
+
+      - name: Commit and Push
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+
+          if (git status --porcelain) {
+            Write-Host "发现新版本，正在提交..."
+            git add .
+            git commit -m "Auto-update: bucket manifests"
+            git push
+          } else {
+            Write-Host "没有发现新版本，跳过提交。"
+          }
