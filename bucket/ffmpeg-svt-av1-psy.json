@@ -1,0 +1,34 @@
+{
+    "version": "nightly",
+    "description": "FFmpeg with SVT-AV1 & PSY support (Automated Build)",
+    "homepage": "https://github.com/Uranite/FFmpeg-Builds-SVT-AV1-PSY",
+    "license": "GPL-3.0-or-later",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/Uranite/FFmpeg-Builds-SVT-AV1-PSY/releases/download/latest/ffmpeg-master-latest-win64-gpl.zip",
+            "hash": "be02854b8893f87875ffa111ac9854a68d76810f700483f7c60bfa6f9c241367",
+            "extract_dir": "ffmpeg-master-latest-win64-gpl"
+        }
+    },
+    "bin": [
+        ["bin\\ffmpeg.exe", "ffmpeg-psy"],
+        ["bin\\ffplay.exe", "ffplay-psy"],
+        ["bin\\ffprobe.exe", "ffprobe-psy"]
+    ],
+    "checkver": {
+        "url": "https://api.github.com/repos/Uranite/FFmpeg-Builds-SVT-AV1-PSY/releases/latest",
+        "jsonpath": "$.published_at",
+        "regex": "([\\d-]+T[\\d:]+)Z"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/Uranite/FFmpeg-Builds-SVT-AV1-PSY/releases/download/latest/ffmpeg-master-latest-win64-gpl.zip",
+                "hash": {
+                    "url": "https://github.com/Uranite/FFmpeg-Builds-SVT-AV1-PSY/releases/download/latest/checksums.sha256",
+                    "regex": "$sha256\\s+$basename"
+                }
+            }
+        }
+    }
+}
